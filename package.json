@@ -1,6 +1,6 @@
 {
 	"name": "danbooru-import",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"description": "Import Danbooru posts directly into the vault.",
 	"main": "main.js",
 	"type": "module",

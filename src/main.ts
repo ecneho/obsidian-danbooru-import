@@ -52,13 +52,12 @@ class FetchPostModal extends Modal {
 
 		const row = contentEl.createEl("div", { cls: "di-row" });
 		const input = row.createEl("input", { type: "text", cls: "di-input" });
-		input.placeholder = "Post ID";
+		input.placeholder = "Post link or ID";
 
 		const buttons = row.createEl("div", { cls: "di-buttons" });
 		const cancelBtn = buttons.createEl("button", { text: "Cancel" });
 		cancelBtn.onclick = () => this.close();
 
-		const previewBtn = buttons.createEl("button", { text: "Preview" });
 		const importBtn = buttons.createEl("button", { text: "Import" });
 		importBtn.className = "mod-cta";
 
@@ -67,38 +66,6 @@ class FetchPostModal extends Modal {
 				importBtn.click();
 			}
 		});
-
-		const img = contentEl.createEl("img", { cls: "di-img" })
-
-		previewBtn.onclick = async () => {
-			const inputValue = input.value.trim();
-			if (!inputValue) {
-				new Notice("Input is empty.");
-				return;
-			}
-
-			const match = inputValue.match(/posts\/(\d+)/);
-			const id = match ? match[1] : inputValue;
-
-			if (!/^\d+$/.test(id ?? "")) {
-				new Notice("Invalid post.");
-				return;
-			}
-
-			const url = `https://danbooru.donmai.us/posts/${id}.json`;
-			const response = await requestUrl({
-				url: url
-			});
-
-			if (!response || !response.json) {
-				new Notice("Fetch error.");
-				return;
-			}
-
-			const post = response.json as PostResponse;
-			img.src = post.file_url;
-			img.className = "di-img-shown";
-		}
 
 		importBtn.onclick = async () => {
 			const inputValue = input.value.trim();
