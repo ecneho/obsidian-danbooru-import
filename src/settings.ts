@@ -58,8 +58,8 @@ export class MainSettingsTab extends PluginSettingTab {
 				}));
 
 		new Setting(containerEl)
-			.setName("Binary folder path")
-			.setDesc("The folder where all metadata files will be saved.")
+			.setName("Image metadata folder path")
+			.setDesc("The folder where all image metadata files will be saved.")
 			.addText(text => text
 				.setPlaceholder('')
 				.setValue(this.plugin.settings.binaryPath)
@@ -69,8 +69,8 @@ export class MainSettingsTab extends PluginSettingTab {
 				}));
 
 		new Setting(containerEl)
-			.setName("Tag folder path")
-			.setDesc("The folder where all tag files will be saved.")
+			.setName("Tag metadata folder path")
+			.setDesc("The folder where all tag metadata files will be saved.")
 			.addText(text => text
 				.setPlaceholder('')
 				.setValue(this.plugin.settings.tagPath)
@@ -92,8 +92,8 @@ export class MainSettingsTab extends PluginSettingTab {
 				}));
 
 		new Setting(containerEl)
-			.setName("Binary name template")
-			.setDesc("Custom template for binary filenames. Supports ID and rating.")
+			.setName("Image metadata filename template")
+			.setDesc("Custom template for image metadata filenames. Supports ID and rating.")
 			.addText(text => text
 				// eslint-disable-next-line obsidianmd/ui/sentence-case
 				.setPlaceholder('Binary_[[ID]]-[[RATING]]')
