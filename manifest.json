@@ -1,0 +1,11 @@
+{
+	"id": "danbooru-import",
+	"name": "Danbooru Import",
+	"version": "1.0.0",
+	"minAppVersion": "0.15.0",
+	"description": "Import Danbooru posts directly into the vault.",
+	"author": "Ecneho",
+	"authorUrl": "https://github.com/ecneho",
+	"fundingUrl": "https://www.patreon.com/c/ecneho",
+	"isDesktopOnly": false
+}

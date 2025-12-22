@@ -1,0 +1,32 @@
+.di-heading {
+	margin-top: 0;
+}
+
+.di-row {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	margin-top: 6px;
+	margin-bottom: 16px;
+}
+
+.di-input {
+	flex: 1;
+}
+
+.di-buttons {
+	display: flex;
+	gap: 6px;
+}
+
+.di-img {
+	display: none;
+	width: 90%;
+	margin: auto;
+}
+
+.di-img-shown {
+	display: block;
+	width: 90%;
+	margin: auto;
+}
