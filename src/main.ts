@@ -48,7 +48,7 @@ class FetchPostModal extends Modal {
 		const { contentEl } = this;
 
 		contentEl.createEl("h3", { text: "Import danbooru post", cls: "di-heading" });
-		contentEl.createEl("p", { text: "Enter an ID of the post to import:" });
+		contentEl.createEl("p", { text: "Enter the ID or link of the post to import:" });
 
 		const row = contentEl.createEl("div", { cls: "di-row" });
 		const input = row.createEl("input", { type: "text", cls: "di-input" });
@@ -71,13 +71,21 @@ class FetchPostModal extends Modal {
 		const img = contentEl.createEl("img", { cls: "di-img" })
 
 		previewBtn.onclick = async () => {
-			const id = input.value.trim();
-			if (!id) {
-				new Notice("ID is empty.");
+			const inputValue = input.value.trim();
+			if (!inputValue) {
+				new Notice("Input is empty.");
 				return;
 			}
 
-			const url = `https://danbooru.donmai.us/posts/${id}.json`
+			const match = inputValue.match(/posts\/(\d+)/);
+			const id = match ? match[1] : inputValue;
+
+			if (!/^\d+$/.test(id ?? "")) {
+				new Notice("Invalid post.");
+				return;
+			}
+
+			const url = `https://danbooru.donmai.us/posts/${id}.json`;
 			const response = await requestUrl({
 				url: url
 			});
@@ -93,14 +101,22 @@ class FetchPostModal extends Modal {
 		}
 
 		importBtn.onclick = async () => {
-			const id = input.value.trim();
-			if (!id) {
-				new Notice("ID is empty.");
+			const inputValue = input.value.trim();
+			if (!inputValue) {
+				new Notice("Input is empty.");
 				return;
 			}
 
 			try {
-				const url = `https://danbooru.donmai.us/posts/${id}.json`
+				const match = inputValue.match(/posts\/(\d+)/);
+				const id = match ? match[1] : inputValue;
+
+				if (!/^\d+$/.test(id ?? "")) {
+					new Notice("Invalid post.");
+					return;
+				}
+
+				const url = `https://danbooru.donmai.us/posts/${id}.json`;
 				const response = await requestUrl({
 					url: url
 				});
@@ -172,6 +188,7 @@ class FetchPostModal extends Modal {
 							try {
 								await this.app.vault.create(path, `---\ncategory: ${category}\n---`);
 							}
+							catch { /* pass */ }
 							finally {
 								list += `\n![[${path}]]`;
 							}
@@ -181,25 +198,33 @@ class FetchPostModal extends Modal {
 				}
 
 				let tags = ""
-				const characterTags: string[] = post.tag_string_character
-					? post.tag_string_character.split(" ")
-					: [];
-				tags += await prepareTags(characterTags, "Character");
+				if (this.plugin.settings.includeCharacterTags) {
+					const characterTags: string[] = post.tag_string_character
+						? post.tag_string_character.split(" ")
+						: [];
+					tags += await prepareTags(characterTags, "Character");
+				}
 
-				const copyrightTags: string[] = post.tag_string_copyright
-					? post.tag_string_copyright.split(" ")
-					: [];
-				tags += await prepareTags(copyrightTags, "Copyright");
+				if (this.plugin.settings.includeCopyrightTags) {
+					const copyrightTags: string[] = post.tag_string_copyright
+						? post.tag_string_copyright.split(" ")
+						: [];
+					tags += await prepareTags(copyrightTags, "Copyright");
+				}
 
-				const artistTags: string[] = post.tag_string_artist
-					? post.tag_string_artist.split(" ")
-					: [];
-				tags += await prepareTags(artistTags, "Artist");
+				if (this.plugin.settings.includeArtistTags) {
+					const artistTags: string[] = post.tag_string_artist
+						? post.tag_string_artist.split(" ")
+						: [];
+					tags += await prepareTags(artistTags, "Artist");
+				}
 
-				const generalTags: string[] = post.tag_string_general
-					? post.tag_string_general.split(" ")
-					: [];
-				tags += await prepareTags(generalTags, "General");
+				if (this.plugin.settings.includeGeneralTags) {
+					const generalTags: string[] = post.tag_string_general
+						? post.tag_string_general.split(" ")
+						: [];
+					tags += await prepareTags(generalTags, "General");
+				}
 
 				const matter = customAttributes.length
 					? `---\n${customAttributes.map(attr => `${attr.key}: ${attr.value}`).join('\n')}\n---\n`
