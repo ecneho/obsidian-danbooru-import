@@ -1,6 +1,7 @@
 import {IMAGE_EXTENSIONS, ImageExtension, PostResponse, RatingDict} from "./types";
 import {normalizeString} from "./utils/normalizeString";
 import {parseTokens} from "./utils/parseTokens";
+import {DEFAULT_SETTINGS} from "./settings";
 import DanbooruImport from "./main";
 import {App, Modal, normalizePath, Notice, requestUrl} from "obsidian";
 
@@ -91,7 +92,7 @@ export class FetchPostModal extends Modal {
 					'[[RATING]]': RatingDict[post.rating]
 				};
 
-				const imageFileName = parseTokens(imageNameTemplate, tokens);
+				const imageFileName = parseTokens(imageNameTemplate?.trim() || DEFAULT_SETTINGS.imageNameTemplate, tokens);
 				const imageFinalPath = normalizePath(`${imagePath}/${imageFileName}.${extension}`);
 
 				this.app.vault.createBinary(
@@ -157,10 +158,10 @@ export class FetchPostModal extends Modal {
 					? `---\n${customAttributes.map(attr => `${attr.key}: ${attr.value}`).join('\n')}\n---\n`
 					: "";
 
-				const binaryFileName = parseTokens(binaryNameTemplate, tokens);
+				const binaryFileName = parseTokens(binaryNameTemplate?.trim() || DEFAULT_SETTINGS.binaryNameTemplate, tokens);
 				const binaryFinalPath = normalizePath(`${binaryPath}/${binaryFileName}.md`);
-				const content = `${matter}![[${imageFinalPath}]]${tags}`;
 
+				const content = `${matter}![[${imageFinalPath}]]${tags}`;
 				this.app.vault.create(binaryFinalPath, content).catch(() => {
 					new Notice("Binary already exists.");
 				});

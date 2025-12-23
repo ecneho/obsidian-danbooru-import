@@ -1,6 +1,6 @@
-import {App, PluginSettingTab, Setting} from "obsidian";
-import DanbooruImport from "./main";
 import {AttributeEntry, IMAGE_EXTENSIONS, ImageExtension} from "./types";
+import DanbooruImport from "./main";
+import {App, PluginSettingTab, Setting} from "obsidian";
 
 export interface DanbooruImportSettings {
 	imageExtension: ImageExtension;
@@ -21,8 +21,8 @@ export interface DanbooruImportSettings {
 export const DEFAULT_SETTINGS: DanbooruImportSettings = {
 	imageExtension: "png",
 	preserveImageExtension: false,
-	imageNameTemplate: "danbooru-[[ID]]",
-	binaryNameTemplate: "danbooru-[[ID]]",
+	imageNameTemplate: "[[ID]]",
+	binaryNameTemplate: "[[ID]]",
 	useUnderscores: false,
 	customAttributes: [],
 	includeCharacterTags: true,
@@ -83,7 +83,7 @@ export class MainSettingsTab extends PluginSettingTab {
 			.setName("Image name template")
 			.setDesc("Custom template for image filenames. Supports ID and rating.")
 			.addText(text => text
-				.setPlaceholder('Image_[[ID]]')
+				.setPlaceholder('[[ID]]')
 				.setValue(this.plugin.settings.imageNameTemplate)
 				.onChange(async (value) => {
 					this.plugin.settings.imageNameTemplate = value;
@@ -94,7 +94,7 @@ export class MainSettingsTab extends PluginSettingTab {
 			.setName("Image metadata filename template")
 			.setDesc("Custom template for image metadata filenames. Supports ID and rating.")
 			.addText(text => text
-				.setPlaceholder('Binary_[[ID]]')
+				.setPlaceholder('[[ID]]')
 				.setValue(this.plugin.settings.binaryNameTemplate)
 				.onChange(async (value) => {
 					this.plugin.settings.binaryNameTemplate = value;
