@@ -50,7 +50,7 @@ export class MainSettingsTab extends PluginSettingTab {
 			.setName("Image folder path")
 			.setDesc("The folder where all images will be saved.")
 			.addText(text => text
-				.setPlaceholder('')
+				.setPlaceholder('Empty path = vault root')
 				.setValue(this.plugin.settings.imagePath)
 				.onChange(async (value) => {
 					this.plugin.settings.imagePath = value;
@@ -61,7 +61,7 @@ export class MainSettingsTab extends PluginSettingTab {
 			.setName("Image metadata folder path")
 			.setDesc("The folder where all image metadata files will be saved.")
 			.addText(text => text
-				.setPlaceholder('')
+				.setPlaceholder('Empty path = vault root')
 				.setValue(this.plugin.settings.binaryPath)
 				.onChange(async (value) => {
 					this.plugin.settings.binaryPath = value;
@@ -72,7 +72,7 @@ export class MainSettingsTab extends PluginSettingTab {
 			.setName("Tag metadata folder path")
 			.setDesc("The folder where all tag metadata files will be saved.")
 			.addText(text => text
-				.setPlaceholder('')
+				.setPlaceholder('Empty path = vault root')
 				.setValue(this.plugin.settings.tagPath)
 				.onChange(async (value) => {
 					this.plugin.settings.tagPath = value;
@@ -83,8 +83,7 @@ export class MainSettingsTab extends PluginSettingTab {
 			.setName("Image name template")
 			.setDesc("Custom template for image filenames. Supports ID and rating.")
 			.addText(text => text
-				// eslint-disable-next-line obsidianmd/ui/sentence-case
-				.setPlaceholder('Image_[[ID]]-[[RATING]]')
+				.setPlaceholder('Image_[[ID]]')
 				.setValue(this.plugin.settings.imageNameTemplate)
 				.onChange(async (value) => {
 					this.plugin.settings.imageNameTemplate = value;
@@ -95,8 +94,7 @@ export class MainSettingsTab extends PluginSettingTab {
 			.setName("Image metadata filename template")
 			.setDesc("Custom template for image metadata filenames. Supports ID and rating.")
 			.addText(text => text
-				// eslint-disable-next-line obsidianmd/ui/sentence-case
-				.setPlaceholder('Binary_[[ID]]-[[RATING]]')
+				.setPlaceholder('Binary_[[ID]]')
 				.setValue(this.plugin.settings.binaryNameTemplate)
 				.onChange(async (value) => {
 					this.plugin.settings.binaryNameTemplate = value;
