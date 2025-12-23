@@ -2,8 +2,7 @@ import {IMAGE_EXTENSIONS, ImageExtension, PostResponse, RatingDict} from "./type
 import {normalizeString} from "./utils/normalizeString";
 import {parseTokens} from "./utils/parseTokens";
 import DanbooruImport from "./main";
-import {App, Modal, Notice, requestUrl} from "obsidian";
-import * as path from "node:path";
+import {App, Modal, normalizePath, Notice, requestUrl} from "obsidian";
 
 export class FetchPostModal extends Modal {
 	plugin: DanbooruImport;
@@ -93,7 +92,7 @@ export class FetchPostModal extends Modal {
 				};
 
 				const imageFileName = parseTokens(imageNameTemplate, tokens);
-				const imageFinalPath = path.posix.join(imagePath, `${imageFileName}.${extension}`);
+				const imageFinalPath = normalizePath(`${imagePath}/${imageFileName}.${extension}`);
 
 				this.app.vault.createBinary(
 					imageFinalPath,
@@ -159,7 +158,7 @@ export class FetchPostModal extends Modal {
 					: "";
 
 				const binaryFileName = parseTokens(binaryNameTemplate, tokens);
-				const binaryFinalPath = `${binaryPath}/${binaryFileName}.md`;
+				const binaryFinalPath = normalizePath(`${binaryPath}/${binaryFileName}.md`);
 				const content = `${matter}![[${imageFinalPath}]]${tags}`;
 
 				this.app.vault.create(binaryFinalPath, content).catch(() => {
